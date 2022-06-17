@@ -1,23 +1,16 @@
 <template>
   <div class="users-view">
-    <SearchUsersForm class="users-view--form" />
+    <keep-alive>
+      <SearchUsersComponent />
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import SearchUsersForm from '@/components/forms/SearchUsersForm.vue'
+import SearchUsersComponent from '@/components/forms/SearchUsersComponent.vue'
 
 export default {
   name: 'UsersView',
-  components: { SearchUsersForm }
+  components: { SearchUsersComponent }
 }
 </script>
-
-<style lang="scss">
-.users-view {
-  &--form {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-}
-</style>

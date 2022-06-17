@@ -21,7 +21,7 @@ export default {
 @import '@/assets/sass/_variables.scss';
 
 .app-header {
-  height: 70px;
+  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;

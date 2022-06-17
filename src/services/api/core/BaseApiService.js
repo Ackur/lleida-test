@@ -6,7 +6,11 @@ export class BaseApiService {
   http
   checkAuth
 
-  constructor({app, baseUrl = import.meta.env.VITE_API_URL, checkAuth = false}) {
+  constructor({
+    app,
+    baseUrl = import.meta.env.VITE_API_URL,
+    checkAuth = false
+  }) {
     this.baseUrl = baseUrl
     this.checkAuth = checkAuth
 
@@ -15,7 +19,7 @@ export class BaseApiService {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
-        'accept': 'application/json'
+        accept: 'application/json'
       }
     })
   }
@@ -23,17 +27,20 @@ export class BaseApiService {
   async httpCall(config, { errorNotice = true } = {}) {
     if (this.checkAuth) {
       this.http.defaults.headers.common.Authorization =
-      localStorage.getItem('token')
+        localStorage.getItem('token')
     }
     try {
       const { data } = await this.http.request(config)
+      if (data.status !== 'Success') {
+        throw data
+      }
       return data
     } catch (error) {
-      const errorMessage = handleErrors(error?.response)
+      const errorMessage = handleErrors(error)
       if (errorNotice && errorMessage) {
         alert(errorMessage)
       }
-      throw {errorMessage, data: error.response.data}
+      throw { errorMessage, data: error }
     }
   }
 }
