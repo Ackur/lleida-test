@@ -36,7 +36,13 @@
     </L-Button>
   </L-Card>
 
-  <UsersTable class="search-users-table" :usersList="usersList" />
+  <UsersTable
+    :paginations="tablePagination"
+    class="search-users-table"
+    :usersList="usersList"
+    :loading="tableLoading"
+    @onChangePage="onChangePage"
+  />
 </template>
 
 <script>
@@ -52,10 +58,15 @@ export default {
   data() {
     return {
       loading: false,
+      tableLoading: false,
       form: {
         provider: '',
-        password: '',
-        limit: 1000
+        password: ''
+      },
+      tablePagination: {
+        limit: 5,
+        offset: 0,
+        total: 0
       },
       rules: { required },
       usersList: [],
@@ -68,20 +79,47 @@ export default {
     }
   },
   methods: {
+    async onChangePage(data) {
+      this.tablePagination = data
+      this.tableLoading = true
+      try {
+        await this.getAccountUsers(this.loading)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.tableLoading = false
+      }
+    },
     async onSubmit() {
       const valid = isThisRefsValid(this.$refs)
       if (valid) {
         this.loading = true
         try {
-          const data = await this.$api.users.getAccountUsers(this.form)
-          this.usersList = data.user_list.users
+          await this.getAccountUsers(this.loading)
         } catch (err) {
-          this.serverMessage = err.errorMessage
-          this.serverMessageType = this.serverMessageTypes.error
-          this.usersList = []
+          console.log(err)
         } finally {
           this.loading = false
         }
+      }
+    },
+    async getAccountUsers() {
+      try {
+        const data = await this.$api.users.getAccountUsers({
+          ...this.form,
+          limit: this.tablePagination.limit,
+          offset: this.tablePagination.offset
+        })
+        this.usersList = data.user_list.users
+        this.tablePagination = {
+          limit: data.user_list.limit,
+          offset: data.user_list.offset,
+          total: data.user_list.total
+        }
+      } catch (err) {
+        this.serverMessage = err.errorMessage
+        this.serverMessageType = this.serverMessageTypes.error
+        this.usersList = []
       }
     }
   },

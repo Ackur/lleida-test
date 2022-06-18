@@ -19,7 +19,7 @@
 
     <div class="l-table__body" :class="{ empty: !filteredTableData.length }">
       <div class="l-table__body--wrap">
-        <div v-if="loading" class="l-table__body--loading">o-loader</div>
+        <div v-if="loading" class="l-table__body--loading">Loading ...</div>
 
         <div
           v-for="(row, index) in filteredTableData"
@@ -232,9 +232,14 @@ export default {
 
     &--loading {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0000008a;
+      color: white;
+      font-size: 20px;
+      border-radius: 10px;
     }
 
     &--row {

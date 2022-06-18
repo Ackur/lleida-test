@@ -147,9 +147,6 @@ export default {
         fill: #736d7b;
       }
     }
-    .page-link {
-      margin: 1px 23px;
-    }
   }
   .arrow-left {
     padding-top: 3px;
@@ -172,7 +169,6 @@ export default {
   .page-link {
     position: relative;
     display: block;
-    padding: 7px 6px;
     margin: 1px 10px;
     line-height: 1.25;
     color: #007bff;

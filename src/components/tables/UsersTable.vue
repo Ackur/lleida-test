@@ -3,11 +3,11 @@
     <LTable
       :headers="headers"
       :items="tableData"
+      paginationServer
       :pageSize="pageOptions.perPage"
-      :itemsTotal="tableData.length"
+      :itemsTotal="pageOptions.total"
       :currentPage="pageOptions.currentPage"
       :loading="loading"
-      hideFooter
       @pageChange="onChangePage"
     >
       <template #item.credit="{ row }">
@@ -34,11 +34,18 @@ export default {
     usersList: {
       type: Array,
       default: () => []
+    },
+    paginations: {
+      type: Object,
+      default: () => ({})
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      loading: false,
       headers: [
         {
           name: 'User ID',
@@ -78,13 +85,20 @@ export default {
       tableData: [],
       pageOptions: {
         currentPage: 1,
-        perPage: 6
+        perPage: 6,
+        total: 0
       }
     }
   },
   methods: {
-    onChangePage() {
-      console.log('onChangePage')
+    onChangePage(page) {
+      if (this.pageOptions.currentPage === page) return
+      this.pageOptions.currentPage = page
+      this.$emit('onChangePage', {
+        limit: this.pageOptions.perPage,
+        offset: (page - 1) * this.pageOptions.perPage,
+        total: this.pageOptions.total
+      })
     },
     dateFormat(seconds) {
       return new Date(+seconds * 1000).toLocaleString()
@@ -96,12 +110,14 @@ export default {
       handler(arr) {
         this.tableData = arr
       }
+    },
+    paginations: {
+      immediate: false,
+      handler(obj) {
+        this.pageOptions.perPage = +obj.limit
+        this.pageOptions.total = +obj.total
+      }
     }
   }
 }
 </script>
-
-<style lang="scss">
-.users-table {
-}
-</style>
