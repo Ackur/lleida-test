@@ -19,6 +19,14 @@
       placeholder="Enter partner account password"
       class="search-users-form--item"
     />
+
+    <div
+      class="search-users-form--server-message"
+      :class="[serverMessageType, { active: serverMessage }]"
+    >
+      {{ serverMessage }}
+    </div>
+
     <L-Button
       :loading="loading"
       class="search-users-form--submit"
@@ -50,7 +58,13 @@ export default {
         limit: 1000
       },
       rules: { required },
-      usersList: []
+      usersList: [],
+      serverMessage: '',
+      serverMessageType: '',
+      serverMessageTypes: {
+        error: 'error',
+        success: 'success'
+      }
     }
   },
   methods: {
@@ -62,11 +76,20 @@ export default {
           const data = await this.$api.users.getAccountUsers(this.form)
           this.usersList = data.user_list.users
         } catch (err) {
-          console.log(err)
+          this.serverMessage = err.errorMessage
+          this.serverMessageType = this.serverMessageTypes.error
           this.usersList = []
         } finally {
           this.loading = false
         }
+      }
+    }
+  },
+  watch: {
+    form: {
+      deep: true,
+      handler() {
+        this.serverMessage = ''
       }
     }
   }
@@ -79,10 +102,38 @@ export default {
   margin: 0 auto;
 
   &--item {
-    margin-bottom: 14px;
+    margin-bottom: 15px;
   }
   &--submit {
-    margin-top: 30px;
+    margin-top: 20px;
+  }
+
+  &--server-message {
+    max-height: 0;
+    text-align: center;
+    font-weight: 600;
+    border: 1px dashed transparent;
+    overflow: hidden;
+    opacity: 0;
+    transition: 0.4s;
+
+    &.error {
+      color: crimson;
+      border-color: crimson;
+    }
+
+    &.success {
+      color: green;
+      border-color: green;
+    }
+
+    &.active {
+      max-height: 100px;
+      overflow: visible;
+      opacity: 1;
+      margin-bottom: 15px;
+      padding: 10px;
+    }
   }
 }
 

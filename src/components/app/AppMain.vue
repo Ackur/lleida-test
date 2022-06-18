@@ -24,7 +24,7 @@ export default {
   .layout-fade {
     &-enter-active,
     &-leave-active {
-      transition: 0.6s;
+      transition: 0.4s ease;
     }
 
     &-enter-from,

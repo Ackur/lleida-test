@@ -1,15 +1,15 @@
 import { BaseApiService } from './core/BaseApiService'
 
-export class UsersApiService extends BaseApiService {
+export class SmsApiService extends BaseApiService {
   constructor({ app }) {
     super({ app, checkAuth: true })
   }
 
-  async getAccountUsers(payload) {
+  async send(payload) {
     const data = await this.httpCall(
       {
         method: 'post',
-        url: '?request=list',
+        url: 'https://api.lleida.net/sms/v2/',
         data: payload
       },
       { errorNotice: false }

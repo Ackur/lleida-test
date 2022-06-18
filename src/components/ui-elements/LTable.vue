@@ -253,15 +253,15 @@ export default {
         padding: 0px 10px;
         margin-bottom: 8px;
 
+        @media (max-width: 900px) {
+          flex-direction: column;
+          & > div {
+            max-width: 100% !important;
+          }
+        }
+
         &:hover {
           box-shadow: 0px 0px 5px 0px #2f2f2f40;
-        }
-      }
-
-      @media (max-width: 900px) {
-        flex-direction: column;
-        & > div {
-          max-width: 100% !important;
         }
       }
     }
@@ -284,15 +284,19 @@ export default {
         justify-content: space-between !important;
         align-items: center !important;
         border-bottom: 1px solid #736d7b47;
+        text-align: right;
         white-space: normal;
         word-break: break-word;
+        padding: 10px;
+
         &:last-child {
           border-bottom: none;
         }
 
         &:before {
           content: attr(data-label);
-          font-weight: normal;
+          font-weight: 600;
+          text-align: left;
           word-break: break-word;
           color: #736d7b;
           margin-right: 10px;

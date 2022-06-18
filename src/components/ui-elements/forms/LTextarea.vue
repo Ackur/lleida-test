@@ -1,28 +1,30 @@
 <template>
-  <div class="l-input">
-    <label v-if="label" class="l-input--label" :class="{ required: required }">
+  <div class="l-textarea">
+    <label
+      v-if="label"
+      class="l-textarea--label"
+      :class="{ required: required }"
+    >
       {{ label }}
     </label>
-    <input
+    <textarea
       v-model="inputValue"
-      class="l-input--input"
+      class="l-textarea--textarea"
       :class="{
-        'g-error': errorMsg || invalid
+        'g-error': errorMsg
       }"
-      :type="localInputType"
       :placeholder="placeholder"
-      :readonly="readonly"
       :autocomplete="autocomplete"
       @blur="onBlur"
-    />
-    <div class="l-input__message">
+    ></textarea>
+    <div class="l-textarea__message">
       <transition name="show-message" mode="out-in">
-        <div v-if="errorMsg" class="l-input__message--error">
+        <div v-if="errorMsg" class="l-textarea__message--error">
           {{ errorMsg }}
         </div>
         <div
           v-else-if="(hint || $slots.hint) && !errorMsg"
-          class="l-input__message--hint"
+          class="l-textarea__message--hint"
         >
           <slot name="hint">
             {{ hint }}
@@ -37,7 +39,7 @@
 import { fieldErrorHandler } from '@/utils/fields-rules.js'
 
 export default {
-  name: 'LInput',
+  name: 'LTextarea',
   props: {
     modelValue: {
       type: [String, Number],
@@ -51,12 +53,9 @@ export default {
       type: [String, Number],
       default: null
     },
-    type: {
+    hint: {
       type: String,
-      default: 'text',
-      validator: (value) => {
-        return value.match(/(text|number|email|password|tel|date)/)
-      }
+      default: ''
     },
     rules: {
       type: [Function, Array],
@@ -66,26 +65,10 @@ export default {
       type: Boolean,
       default: false
     },
-    hint: {
-      type: String,
-      default: ''
-    },
-    invalid: {
-      type: Boolean,
-      default: false
-    },
     errorHandlerOn: {
       type: String,
       default: 'change',
       description: 'blur | change | initial'
-    },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
-    readonly: {
-      type: Boolean,
-      default: false
     },
     autocomplete: {
       type: String,
@@ -95,8 +78,7 @@ export default {
   emits: ['update:modelValue'],
   data() {
     return {
-      errorMsg: '',
-      localInputType: ''
+      errorMsg: ''
     }
   },
   computed: {
@@ -109,20 +91,7 @@ export default {
       }
     }
   },
-  mounted() {
-    this.changeType(this.type)
-
-    if (this.errorHandlerOn === 'initial') {
-      this.errorHandler()
-    }
-  },
   methods: {
-    changeType(newType, evt) {
-      // bug fixer. if remove this row input type changed when pres "Enter" ))
-      if (evt && evt.pointerId === -1) return
-
-      this.localInputType = newType
-    },
     onBlur() {
       this.checkErrorOnBluR()
     },
@@ -147,15 +116,14 @@ export default {
 </script>
 
 <style lang="scss">
-.l-input {
+.l-textarea {
   display: flex;
   flex-direction: column;
 
   &--label {
     margin-bottom: 3px;
-    &.required {
-      position: relative;
 
+    &.required {
       &::after {
         content: '*';
         color: crimson;
@@ -163,19 +131,20 @@ export default {
     }
   }
 
-  &--input {
-    height: 30px;
+  &--textarea {
+    height: 150px;
     border: 2px solid transparent;
     border-radius: 4px;
-    padding: 0 10px;
+    padding: 5px 10px;
+    resize: vertical;
+    box-sizing: border-box;
 
     &:focus {
       outline: none;
       border-color: #3f51b5;
     }
-
     &::placeholder {
-      opacity: 0.5;
+      opacity: 0.7;
     }
     &.g-error {
       border-color: crimson;

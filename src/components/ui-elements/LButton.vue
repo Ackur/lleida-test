@@ -4,6 +4,7 @@
     :is="tag"
     :type="type"
     :disabled="disabled || loading"
+    :class="[color, size, { icon: icon, rounded: rounded, outline: outline }]"
   >
     <div v-if="loading" class="l-button__content--loading"></div>
     <div class="l-button__content">
@@ -18,13 +19,13 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'success',
-      description: 'look colorClass in Data'
+      default: 'blue',
+      description: 'blue | green'
     },
     size: {
       type: String,
-      default: '',
-      description: 'lg|sm|xs look sizeClass'
+      default: 'sm',
+      description: 'lg|sm|xs'
     },
     type: {
       type: String,
@@ -52,7 +53,7 @@ export default {
       type: Boolean,
       default: false
     },
-    flat: {
+    icon: {
       type: Boolean,
       default: false
     }
@@ -65,7 +66,6 @@ export default {
 
 .l-button {
   position: relative;
-  height: 46px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -74,10 +74,9 @@ export default {
   font-weight: bold;
   letter-spacing: 0.5px;
   padding: 0 15px;
-  border: none;
+  border: 2px solid transparent;
   outline: none;
   color: white;
-  background-color: #3f51b5;
   cursor: pointer;
   transition: 0.3s;
 
@@ -90,12 +89,74 @@ export default {
   }
 
   &:disabled {
-    background-color: darken($color: #3f51b5, $amount: 15%);
+    opacity: .5;
     cursor: inherit;
 
     .l-button__content {
       color: #818181;
     }
+  }
+
+  &.icon {
+    width: inherit;
+    min-width: inherit;
+    border-radius: 50%;
+    padding: 0;
+
+    &.lg {
+      width: 60px;
+      min-width: 60px;
+    }
+
+    &.sm {
+      width: 46px;
+      min-width: 46px;
+    }
+
+    &.xs {
+      width: 34px;
+      min-width: 34px;
+    }
+  }
+
+  &.lg {
+    height: 60px;
+  }
+
+  &.sm {
+    height: 46px;
+  }
+
+  &.xs {
+    height: 34px;
+  }
+
+  &.blue {
+    background-color: #3f51b5;
+    &.outline {
+      border-color: #3f51b5;
+    }
+  }
+  &.green {
+    background-color: #4caf50;
+    &.outline {
+      border-color: #4caf50;
+    }
+  }
+  &.red {
+    background-color: crimson;
+    &.outline {
+      border-color: crimson;
+    }
+  }
+
+  &.outline {
+    background-color: unset;
+    color: $app-accent-text-color;
+  }
+
+  &.rounded {
+    border-radius: 16px;
   }
 
   &__content {

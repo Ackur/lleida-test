@@ -1,8 +1,10 @@
 const isThisRefsValid = (refs) => {
   let result = []
   for (const el of Object.keys(refs)) {
-    if (refs[el].rules && refs[el].errorHandler) {
-      result.push(refs[el].errorHandler())
+    const ref = Array.isArray(refs[el]) ? refs[el][0] : refs[el]
+    if (!ref) return true
+    if (ref.rules && ref.errorHandler) {
+      result.push(ref.errorHandler())
     }
   }
   result = result.every((el) => !el)
@@ -26,24 +28,6 @@ const fieldErrorHandler = (rules, value) => {
     return hasError
   } else {
     console.log('rules must be an array')
-  }
-}
-
-const apiFieldsErrorHandler = ({ errors, refs }) => {
-  if (errors.length && errors.some((el) => el.field)) {
-    errors.forEach((error) => {
-      if (error.field) {
-        Object.keys(refs).forEach((refKey) => {
-          if (
-            refs[refKey].rules &&
-            refs[refKey].errorHandler &&
-            refKey === error.field // ref name and error.field name must match
-          ) {
-            refs[refKey].errorMsg = error.content
-          }
-        })
-      }
-    })
   }
 }
 
@@ -74,6 +58,9 @@ const containsUpperCase = (v, message) =>
 const containsLowerCase = (v, message) =>
   /(?=.*[a-z])/.test(v) || message || 'rules.containsLowerCase'
 
+const onlyNumbers = (v, message) =>
+  /^[+]\d+$/.test(v) || message || 'phone number'
+
 export {
   required,
   email,
@@ -87,5 +74,5 @@ export {
   containsLowerCase,
   isThisRefsValid,
   fieldErrorHandler,
-  apiFieldsErrorHandler
+  onlyNumbers
 }

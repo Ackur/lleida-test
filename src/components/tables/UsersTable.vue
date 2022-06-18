@@ -10,6 +10,12 @@
       hideFooter
       @pageChange="onChangePage"
     >
+      <template #item.credit="{ row }">
+        {{ (row.credit * 1).toFixed(2) }}
+      </template>
+      <template #item.created="{ row }">
+        {{ dateFormat(row.created) }}
+      </template>
     </LTable>
   </L-Card>
 </template>
@@ -66,7 +72,7 @@ export default {
         {
           name: 'Status',
           value: 'status',
-          maxWidth: '85px'
+          maxWidth: '50px'
         }
       ],
       tableData: [],
@@ -79,6 +85,9 @@ export default {
   methods: {
     onChangePage() {
       console.log('onChangePage')
+    },
+    dateFormat(seconds) {
+      return new Date(+seconds * 1000).toLocaleString()
     }
   },
   watch: {
