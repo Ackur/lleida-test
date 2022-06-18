@@ -1,7 +1,9 @@
 <template>
   <footer class="app-footer">
     <div class="l-container">
-      <div class="app-footer__content">@copyright</div>
+      <div class="app-footer__content">
+        © footer {{ new Date().getFullYear() }}
+      </div>
     </div>
   </footer>
 </template>

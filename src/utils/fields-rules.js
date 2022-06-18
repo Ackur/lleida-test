@@ -31,47 +31,9 @@ const fieldErrorHandler = (rules, value) => {
 }
 
 // RULES RULES RULES RULES RULES
-const required = (v, message) => !!v || message || 'rules.required'
-
-const email = (v, message) => /.+@.+/.test(v) || message || 'rules.email'
-
-const minLength = (v, minLength, message) =>
-  v.length >= minLength || message || `rules.pswMinLength ${minLength}`
-
-const min = (v, min, message) => v >= min || message || `rules.min ${min}`
-
-const max = (v, max, message) => v <= max || message || `rules.max ${max}`
-
-const mismatch = (value1, value2, fieldName, message) =>
-  value1 === value2 || message || `rules.pswMismatch ${fieldName}`
-
-const containsNumber = (v, message) =>
-  /\d/.test(v) || message || 'rules.containsNumber'
-
-const containsSymbol = (v, message) =>
-  /[|\\/~^:,;?!&%$#@*+()]/.test(v) || message || 'rules.containsSymbol'
-
-const containsUpperCase = (v, message) =>
-  /(?=.*[A-Z])/.test(v) || message || 'rules.containsUpperCase'
-
-const containsLowerCase = (v, message) =>
-  /(?=.*[a-z])/.test(v) || message || 'rules.containsLowerCase'
+const required = (v, message) => !!v || message || 'required field'
 
 const phoneNumber = (v, message) =>
-  /^[+]\d+$/.test(v) || message || 'enter + and phone number'
+  /^[+]\d+$/.test(v) || message || 'enter "+" and phone number'
 
-export {
-  required,
-  email,
-  min,
-  max,
-  minLength,
-  mismatch,
-  containsNumber,
-  containsSymbol,
-  containsUpperCase,
-  containsLowerCase,
-  isThisRefsValid,
-  fieldErrorHandler,
-  phoneNumber
-}
+export { required, isThisRefsValid, fieldErrorHandler, phoneNumber }

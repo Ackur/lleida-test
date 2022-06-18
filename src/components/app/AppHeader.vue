@@ -36,6 +36,7 @@ export default {
     &--item {
       position: relative;
       font-weight: 600;
+      user-select: none;
 
       &:after {
         content: '';
