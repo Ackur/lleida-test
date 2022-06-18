@@ -29,7 +29,7 @@
       >
         <L-Input
           v-model.trim="form.dst.num[idx]"
-          :rules="[rules.required, rules.onlyNumbers]"
+          :rules="[rules.required, rules.phoneNumber]"
           required
           type="tel"
           :ref="'num' + idx"
@@ -93,7 +93,7 @@ import LCard from '@/components/ui-elements/LCard.vue'
 import LButton from '@/components/ui-elements/LButton.vue'
 import LInput from '@/components/ui-elements/forms/LInput.vue'
 import LTextarea from '@/components/ui-elements/forms/LTextarea.vue'
-import { required, onlyNumbers, isThisRefsValid } from '@/utils/fields-rules.js'
+import { required, phoneNumber, isThisRefsValid } from '@/utils/fields-rules.js'
 
 export default {
   name: 'SendMessageForm',
@@ -107,7 +107,7 @@ export default {
         dst: { num: [''] },
         txt: ''
       },
-      rules: { required, onlyNumbers },
+      rules: { required, phoneNumber },
       serverMessage: '',
       serverMessageType: '',
       serverMessageTypes: {
@@ -165,6 +165,10 @@ export default {
 
     &--item {
       width: 90%;
+    }
+
+    &--btn {
+      font-size: 20px;
     }
   }
 

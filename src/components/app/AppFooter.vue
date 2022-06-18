@@ -16,7 +16,7 @@ export default {
 @import '@/assets/sass/_variables.scss';
 
 .app-footer {
-  min-height: 60px;
+  min-height: 30px;
   background-color: $app-accent-color;
   box-shadow: 0 0 5px 0px #000;
 

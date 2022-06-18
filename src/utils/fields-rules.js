@@ -2,8 +2,7 @@ const isThisRefsValid = (refs) => {
   let result = []
   for (const el of Object.keys(refs)) {
     const ref = Array.isArray(refs[el]) ? refs[el][0] : refs[el]
-    if (!ref) return true
-    if (ref.rules && ref.errorHandler) {
+    if (ref?.rules && ref?.errorHandler) {
       result.push(ref.errorHandler())
     }
   }
@@ -58,8 +57,8 @@ const containsUpperCase = (v, message) =>
 const containsLowerCase = (v, message) =>
   /(?=.*[a-z])/.test(v) || message || 'rules.containsLowerCase'
 
-const onlyNumbers = (v, message) =>
-  /^[+]\d+$/.test(v) || message || 'phone number'
+const phoneNumber = (v, message) =>
+  /^[+]\d+$/.test(v) || message || 'enter + and phone number'
 
 export {
   required,
@@ -74,5 +73,5 @@ export {
   containsLowerCase,
   isThisRefsValid,
   fieldErrorHandler,
-  onlyNumbers
+  phoneNumber
 }
